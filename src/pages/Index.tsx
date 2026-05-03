@@ -1,14 +1,44 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import Layout from "@/components/Layout";
+import HomePage from "./HomePage";
+import BuksyPage from "./BuksyPage";
+import VideoPage from "./VideoPage";
+import CryptoPage from "./CryptoPage";
+import PhonePage from "./PhonePage";
+import ExtensionsPage from "./ExtensionsPage";
 
-const Index = () => {
+type Page = "home" | "buksy" | "video" | "crypto" | "phone" | "extensions";
+
+export default function Index() {
+  const [currentPage, setCurrentPage] = useState<Page>("home");
+
+  const handleNavigate = (page: Page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case "home":
+        return <HomePage onNavigate={handleNavigate} />;
+      case "buksy":
+        return <BuksyPage />;
+      case "video":
+        return <VideoPage />;
+      case "crypto":
+        return <CryptoPage />;
+      case "phone":
+        return <PhonePage />;
+      case "extensions":
+        return <ExtensionsPage />;
+      default:
+        return <HomePage onNavigate={handleNavigate} />;
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4 color-black text-black">Добро пожаловать!</h1>
-        <p className="text-xl text-gray-600">тут будет отображаться ваш проект</p>
-      </div>
-    </div>
+    <Layout currentPage={currentPage} onNavigate={handleNavigate}>
+      {renderPage()}
+    </Layout>
   );
-};
-
-export default Index;
+}
